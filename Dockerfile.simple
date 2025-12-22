@@ -1,0 +1,55 @@
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apk add --no-cache curl openssl
+
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
+COPY patches/ ./patches/
+
+# Install pnpm and ALL dependencies (including dev for tsx)
+RUN npm install -g pnpm@9.15.4 && pnpm install
+
+# Copy application code
+COPY . .
+
+# Declare build arguments for Vite environment variables
+ARG VITE_APP_TITLE
+ARG VITE_APP_LOGO
+ARG VITE_FRONTEND_URL
+ARG VITE_BACKEND_URL
+ARG VITE_FRONTEND_FORGE_API_URL
+ARG VITE_FRONTEND_FORGE_API_KEY
+ARG VITE_ANALYTICS_ENDPOINT
+ARG VITE_ANALYTICS_WEBSITE_ID
+
+# Convert ARG to ENV so Vite can access them during build
+ENV VITE_APP_TITLE=$VITE_APP_TITLE
+ENV VITE_APP_LOGO=$VITE_APP_LOGO
+ENV VITE_FRONTEND_URL=$VITE_FRONTEND_URL
+ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
+ENV VITE_FRONTEND_FORGE_API_URL=$VITE_FRONTEND_FORGE_API_URL
+ENV VITE_FRONTEND_FORGE_API_KEY=$VITE_FRONTEND_FORGE_API_KEY
+ENV VITE_ANALYTICS_ENDPOINT=$VITE_ANALYTICS_ENDPOINT
+ENV VITE_ANALYTICS_WEBSITE_ID=$VITE_ANALYTICS_WEBSITE_ID
+
+# Build frontend with environment variables available
+RUN npx vite build
+
+# Copy built frontend to server location
+RUN mkdir -p /app/server/_core/public && cp -r /app/dist/public/* /app/server/_core/public/
+
+# Create uploads directory
+RUN mkdir -p /app/uploads && chmod 777 /app/uploads
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:3000 || exit 1
+
+# Start with tsx (handles TypeScript directly)
+CMD ["npx", "tsx", "server/_core/index.ts"]

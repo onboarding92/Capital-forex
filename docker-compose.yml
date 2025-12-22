@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: bitchange-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: bitchange_pro
+      MYSQL_USER: bitchange
+      MYSQL_PASSWORD: ${DB_PASSWORD:-changeThisPassword}
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - bitchange-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # BitChange Pro Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bitchange-app
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: mysql://bitchange:${DB_PASSWORD:-changeThisPassword}@db:3306/bitchange_pro
+      JWT_SECRET: ${JWT_SECRET}
+      WALLET_MASTER_SEED: ${WALLET_MASTER_SEED}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@bitchangemoney.xyz}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      DOMAIN: ${DOMAIN:-bitchangemoney.xyz}
+      FRONTEND_URL: ${FRONTEND_URL:-https://bitchangemoney.xyz}
+      BACKEND_URL: ${BACKEND_URL:-https://bitchangemoney.xyz/api}
+      # Optional: Payment Gateway APIs
+      CHANGENOW_API_KEY: ${CHANGENOW_API_KEY:-}
+      SIMPLEX_API_KEY: ${SIMPLEX_API_KEY:-}
+      MOONPAY_API_KEY: ${MOONPAY_API_KEY:-}
+      TRANSAK_API_KEY: ${TRANSAK_API_KEY:-}
+      MERCURYO_WIDGET_ID: ${MERCURYO_WIDGET_ID:-}
+      COINGATE_API_TOKEN: ${COINGATE_API_TOKEN:-}
+      CHANGELLY_API_KEY: ${CHANGELLY_API_KEY:-}
+      BANXA_API_KEY: ${BANXA_API_KEY:-}
+      # Optional: Email
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      EMAIL_FROM: ${EMAIL_FROM:-noreply@bitchangemoney.xyz}
+    volumes:
+      - uploads:/app/uploads
+    ports:
+      - "3000:3000"
+    networks:
+      - bitchange-network
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: bitchange-nginx
+    restart: always
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - uploads:/var/www/uploads:ro
+    networks:
+      - bitchange-network
+
+volumes:
+  db_data:
+    driver: local
+  uploads:
+    driver: local
+
+networks:
+  bitchange-network:
+    driver: bridge

@@ -38,7 +38,7 @@
 - [ ] Add leverage selector (1:1 to 1:500)
 - [ ] Create margin level indicator
 - [ ] Update dashboard with forex-specific metrics
-- [ ] Update DashboardLayout sidebar navigation
+- [x] Update DashboardLayout sidebar navigation
 - [ ] Remove deposit/withdrawal crypto address generation
 - [ ] Update deposit/withdrawal for fiat currency (bank transfer, credit card)
 
@@ -62,13 +62,15 @@
 - [ ] Create automatic position closure on margin call
 
 ## Phase 7: Deployment
+- [x] Create comprehensive deployment guide
+- [x] Create .env.example template
 - [ ] Configure new VPS for Capital Forex
 - [ ] Setup domain (capitalforex.xyz or similar)
 - [ ] Configure SSL certificate
-- [ ] Setup Docker containers
+- [ ] Setup PM2 process manager
 - [ ] Deploy to production
 - [ ] Test all forex features
-- [ ] Push to GitHub repository
+- [x] Push to GitHub repository
 
 ## Phase 8: Documentation
 - [ ] Update README for forex broker

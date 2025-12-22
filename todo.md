@@ -2,9 +2,10 @@
 
 ## Phase 1: Project Initialization
 - [x] Update package.json with new project name and description
-- [ ] Update README.md for forex broker
-- [ ] Initialize Git repository
-- [ ] Connect to GitHub (https://github.com/onboarding92/Capital-forex.git)
+- [x] Update README.md for forex broker
+- [x] Initialize Git repository
+- [x] Connect to GitHub (https://github.com/onboarding92/Capital-forex.git)
+- [x] Push initial code to GitHub
 - [x] Adapt database schema for forex trading
 - [x] Remove crypto-specific tables (walletAddresses, deposits, withdrawals, stakingPools, etc.)
 - [x] Add forex-specific tables (tradingAccounts, forexPositions, marginAccounts, swapRates)
@@ -29,13 +30,15 @@
 - [ ] Add 28+ forex pairs (majors, minors, exotics)
 
 ## Phase 4: UI Adaptation
-- [ ] Update branding (Capital Forex instead of BitChange Pro)
-- [ ] Replace crypto terminology with forex terms (BTC/USDT → EUR/USD)
+- [x] Update branding (Capital Forex instead of BitChange Pro)
+- [x] Replace crypto terminology with forex terms on homepage
+- [x] Update homepage with forex pairs and account types
+- [x] Remove staking routes from App.tsx
 - [ ] Update trading interface for forex pairs
 - [ ] Add leverage selector (1:1 to 1:500)
 - [ ] Create margin level indicator
 - [ ] Update dashboard with forex-specific metrics
-- [ ] Remove staking pages (not applicable to forex)
+- [ ] Update DashboardLayout sidebar navigation
 - [ ] Remove deposit/withdrawal crypto address generation
 - [ ] Update deposit/withdrawal for fiat currency (bank transfer, credit card)
 

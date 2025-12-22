@@ -15,7 +15,7 @@ import NotFound from "./pages/NotFound";
 // Lazy load heavy/admin pages for code-splitting
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Trading = lazy(() => import("./pages/Trading"));
-const Staking = lazy(() => import("./pages/Staking"));
+// const Staking = lazy(() => import("./pages/Staking")); // Removed - not applicable to forex
 const Deposit = lazy(() => import("./pages/Deposit"));
 const Withdrawal = lazy(() => import("./pages/Withdrawal"));
 const KYC = lazy(() => import("./pages/KYC"));
@@ -75,7 +75,7 @@ function Router() {
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/trading" component={Trading} />
         <Route path="/trade" component={Trade} />
-        <Route path="/staking" component={Staking} />
+        {/* <Route path="/staking" component={Staking} /> */} {/* Removed - not applicable to forex */}
         <Route path="/deposit" component={Deposit} />
         <Route path="/withdrawal" component={Withdrawal} />
         <Route path="/kyc" component={KYC} />

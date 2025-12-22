@@ -33,24 +33,18 @@ import { Button } from "./ui/button";
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
   { icon: TrendingUp, label: "Trading", path: "/trading" },
-  { icon: Lock, label: "Staking", path: "/staking" },
+  { icon: PieChart, label: "Positions", path: "/portfolio" },
+  { icon: History, label: "History", path: "/transactions" },
   { icon: ArrowDownUp, label: "Deposit", path: "/deposit" },
   { icon: ArrowUpRight, label: "Withdrawal", path: "/withdrawal" },
   { icon: Shield, label: "KYC", path: "/kyc" },
   { icon: MessageSquare, label: "Support", path: "/support" },
-  { icon: History, label: "History", path: "/transactions" },
-  { icon: PieChart, label: "Portfolio", path: "/portfolio" },
-  { icon: Gift, label: "Referrals", path: "/referrals" },
   { icon: Key, label: "API Keys", path: "/api-keys" },
-  { icon: Copy, label: "Copy Trading", path: "/copy-trading" },
-  { icon: Zap, label: "Margin Trading", path: "/margin-trading" },
-  { icon: Rocket, label: "Futures", path: "/futures" },
-  { icon: Trophy, label: "Leaderboard", path: "/leaderboard" },
   { icon: LineChart, label: "Analytics", path: "/analytics" },
   { icon: Settings, label: "Admin Panel", path: "/admin/panel", adminOnly: true },
-  { icon: BarChart3, label: "Analytics", path: "/admin/analytics", adminOnly: true },
+  { icon: BarChart3, label: "Admin Analytics", path: "/admin/analytics", adminOnly: true },
   { icon: Activity, label: "System Health", path: "/admin/system-health", adminOnly: true },
-  { icon: Wallet, label: "Wallet Management", path: "/admin/wallet-management", adminOnly: true },
+  { icon: Users, label: "User Management", path: "/admin/users", adminOnly: true },
 ];
 
 const SIDEBAR_WIDTH_KEY = "sidebar-width";

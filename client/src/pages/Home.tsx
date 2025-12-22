@@ -1,228 +1,271 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Shield, TrendingUp, Zap, Users, Lock, BarChart3, Wallet } from "lucide-react";
+import { ArrowRight, Shield, TrendingUp, Zap, Users, Lock, BarChart3, DollarSign } from "lucide-react";
 import { Link } from "wouter";
 import { useEffect, useState } from "react";
-import { trpc } from "@/lib/trpc";
 
 export default function Home() {
-  const [cryptoPrices, setCryptoPrices] = useState<any[]>([]);
-  
-  const { data: prices } = trpc.prices.getAll.useQuery(undefined, {
-    refetchInterval: 30000,
-  });
-
-  useEffect(() => {
-    if (prices) {
-      setCryptoPrices(prices.slice(0, 6));
-    }
-  }, [prices]);
+  const [forexPairs] = useState([
+    { symbol: "EUR/USD", price: "1.0850", change: "+0.25%" },
+    { symbol: "GBP/USD", price: "1.2650", change: "+0.18%" },
+    { symbol: "USD/JPY", price: "149.50", change: "-0.12%" },
+    { symbol: "USD/CHF", price: "0.8850", change: "+0.08%" },
+    { symbol: "AUD/USD", price: "0.6550", change: "-0.15%" },
+    { symbol: "USD/CAD", price: "1.3650", change: "+0.22%" },
+  ]);
 
   const features = [
     {
       icon: TrendingUp,
-      title: "Advanced Trading",
-      description: "Trade 10+ crypto pairs with limit orders and real-time order book"
-    },
-    {
-      icon: Lock,
-      title: "Secure Staking",
-      description: "Earn up to 15% APR with flexible and locked staking plans"
-    },
-    {
-      icon: Wallet,
-      title: "Multi-Currency Wallets",
-      description: "Personal wallet addresses for BTC, ETH, USDT and 12+ cryptocurrencies"
-    },
-    {
-      icon: Shield,
-      title: "Bank-Grade Security",
-      description: "KYC verification, encrypted storage, and 2FA protection"
+      title: "28 Forex Pairs",
+      description: "Trade major, minor, and exotic currency pairs with instant execution"
     },
     {
       icon: Zap,
-      title: "Instant Deposits",
-      description: "8 payment gateways including MoonPay, Simplex, and Transak"
+      title: "High Leverage",
+      description: "Up to 1:500 leverage on major pairs for maximum trading power"
+    },
+    {
+      icon: DollarSign,
+      title: "Tight Spreads",
+      description: "Competitive spreads from 2 pips on EUR/USD and other major pairs"
+    },
+    {
+      icon: Shield,
+      title: "Risk Management",
+      description: "Margin call protection, stop out at 50%, and negative balance protection"
+    },
+    {
+      icon: Lock,
+      title: "Secure Trading",
+      description: "KYC verification, 2FA authentication, and encrypted communications"
     },
     {
       icon: BarChart3,
       title: "Real-Time Analytics",
-      description: "Live price feeds, trading history, and portfolio tracking"
+      description: "Live P&L updates, margin monitoring, and position management"
     },
   ];
 
-  const stats = [
-    { value: "100+", label: "Daily Users" },
-    { value: "$1M+", label: "Trading Volume" },
-    { value: "15+", label: "Cryptocurrencies" },
-    { value: "99.9%", label: "Uptime" },
-  ];
-
   return (
-    <div className="min-h-screen">
-      {/* Navbar */}
-      <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Zap className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold">BitChange Pro</span>
+    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
+      {/* Hero Section */}
+      <section className="container mx-auto px-4 py-20 text-center">
+        <div className="max-w-4xl mx-auto space-y-8">
+          <div className="inline-block px-4 py-2 bg-primary/10 rounded-full text-primary text-sm font-medium mb-4">
+            Professional Forex Trading Platform
           </div>
           
-          <div className="flex items-center gap-3">
-            <Link href="/auth/login">
-              <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-                Sign In
-              </button>
-            </Link>
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
+            Trade Forex with
+            <span className="block text-primary mt-2">High Leverage</span>
+          </h1>
+          
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Access 28 forex pairs with leverage up to 1:500. Instant execution, tight spreads, and professional risk management tools.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Link href="/auth/register">
-              <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 gradient-primary">
-                Get Started
-              </button>
+              <Button size="lg" className="text-lg px-8 py-6">
+                Start Trading <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            <Link href="/auth/login">
+              <Button size="lg" variant="outline" className="text-lg px-8 py-6">
+                Sign In
+              </Button>
             </Link>
           </div>
         </div>
-      </nav>
+      </section>
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-primary/5 border-b border-border">
-        <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:60px_60px]" />
-        <div className="container relative py-24 md:py-32">
-          <div className="mx-auto max-w-4xl text-center space-y-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm font-medium">
-              <Zap className="h-4 w-4 text-primary" />
-              Professional Cryptocurrency Exchange
-            </div>
-            
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight">
-              Trade, Stake, and Grow{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-purple-500 to-primary">
-                Your Crypto Portfolio
-              </span>
-            </h1>
-            
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Professional cryptocurrency exchange with advanced trading features, 
-              secure staking, and instant deposits. Start trading with confidence.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/auth/register">
-                <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 px-8 gradient-primary text-lg group">
-                  Get Started
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </Link>
-              <Link href="/trading">
-                <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground h-11 px-8 text-lg">
-                  View Markets
-                </button>
-              </Link>
-            </div>
-            
-            <p className="text-sm text-muted-foreground">
-              Already have an account?{" "}
-              <Link href="/auth/login" className="text-primary hover:underline font-medium">
-                Sign in
-              </Link>
-            </p>
-          </div>
-
-          {/* Live Prices Ticker */}
-          {cryptoPrices.length > 0 && (
-            <div className="mt-16 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              {cryptoPrices.map((crypto) => (
-                <Card key={crypto.asset} className="glass border-border/50">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-semibold text-sm">{crypto.asset}/USDT</span>
-                      <span className={`text-xs font-medium ${crypto.change24h >= 0 ? "text-green-500" : "text-red-500"}`}>
-                        {crypto.change24h >= 0 ? "+" : ""}{crypto.change24h.toFixed(2)}%
-                      </span>
-                    </div>
-                    <div className="text-xl font-bold">
-                      ${crypto.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                    </div>
-                  </CardContent>
-                </Card>
+      {/* Live Forex Prices */}
+      <section className="container mx-auto px-4 py-12">
+        <Card className="bg-card/50 backdrop-blur">
+          <CardContent className="p-6">
+            <h3 className="text-lg font-semibold mb-4">Live Forex Rates</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {forexPairs.map((pair) => (
+                <div key={pair.symbol} className="text-center p-3 rounded-lg bg-background/50">
+                  <div className="text-sm text-muted-foreground mb-1">{pair.symbol}</div>
+                  <div className="text-lg font-bold">{pair.price}</div>
+                  <div className={`text-xs ${pair.change.startsWith('+') ? 'text-green-500' : 'text-red-500'}`}>
+                    {pair.change}
+                  </div>
+                </div>
               ))}
             </div>
-          )}
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Features Grid */}
+      <section className="container mx-auto px-4 py-20">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold mb-4">Why Choose Capital Forex</h2>
+          <p className="text-xl text-muted-foreground">
+            Professional trading platform built for serious forex traders
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <Card key={index} className="border-2 hover:border-primary/50 transition-all">
+              <CardContent className="p-6">
+                <feature.icon className="h-12 w-12 text-primary mb-4" />
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-muted/30">
-        <div className="container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, i) => (
-              <div key={i} className="text-center space-y-2">
-                <div className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-500">
-                  {stat.value}
-                </div>
-                <div className="text-muted-foreground font-medium">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+      {/* Account Types */}
+      <section className="container mx-auto px-4 py-20">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold mb-4">Choose Your Account Type</h2>
+          <p className="text-xl text-muted-foreground">
+            Select the account that matches your trading style
+          </p>
         </div>
-      </section>
 
-      {/* Features Section */}
-      <section className="py-24">
-        <div className="container">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold">
-              Everything You Need to Trade Crypto
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Professional-grade features designed for both beginners and experienced traders
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, i) => (
-              <Card key={i} className="glass border-border/50 hover:border-primary/50 transition-all group">
-                <CardContent className="p-6 space-y-4">
-                  <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <feature.icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold">{feature.title}</h3>
-                  <p className="text-muted-foreground">{feature.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-br from-primary/10 via-purple-500/10 to-primary/10">
-        <div className="container">
-          <Card className="glass border-primary/20">
-            <CardContent className="p-12 text-center space-y-6">
-              <Users className="h-16 w-16 mx-auto text-primary" />
-              <h2 className="text-3xl md:text-4xl font-bold">
-                Join 100+ Daily Traders
-              </h2>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Start trading cryptocurrency with confidence. Secure, fast, and professional.
-              </p>
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <Card className="border-2">
+            <CardContent className="p-8 text-center">
+              <h3 className="text-2xl font-bold mb-2">Standard</h3>
+              <div className="text-4xl font-bold text-primary my-4">1:100</div>
+              <p className="text-muted-foreground mb-6">Leverage</p>
+              <ul className="space-y-3 text-left mb-8">
+                <li className="flex items-center">
+                  <div className="h-2 w-2 bg-primary rounded-full mr-3"></div>
+                  <span>2.0 pip spread</span>
+                </li>
+                <li className="flex items-center">
+                  <div className="h-2 w-2 bg-primary rounded-full mr-3"></div>
+                  <span>Ideal for beginners</span>
+                </li>
+                <li className="flex items-center">
+                  <div className="h-2 w-2 bg-primary rounded-full mr-3"></div>
+                  <span>Min deposit: $100</span>
+                </li>
+              </ul>
               <Link href="/auth/register">
-                <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 px-12 gradient-primary text-lg">
-                  Create Free Account
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </button>
+                <Button className="w-full">Open Account</Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          <Card className="border-2 border-primary shadow-lg scale-105">
+            <CardContent className="p-8 text-center">
+              <div className="inline-block px-3 py-1 bg-primary text-primary-foreground text-xs font-bold rounded-full mb-2">
+                POPULAR
+              </div>
+              <h3 className="text-2xl font-bold mb-2">ECN</h3>
+              <div className="text-4xl font-bold text-primary my-4">1:200</div>
+              <p className="text-muted-foreground mb-6">Leverage</p>
+              <ul className="space-y-3 text-left mb-8">
+                <li className="flex items-center">
+                  <div className="h-2 w-2 bg-primary rounded-full mr-3"></div>
+                  <span>1.5 pip spread</span>
+                </li>
+                <li className="flex items-center">
+                  <div className="h-2 w-2 bg-primary rounded-full mr-3"></div>
+                  <span>For active traders</span>
+                </li>
+                <li className="flex items-center">
+                  <div className="h-2 w-2 bg-primary rounded-full mr-3"></div>
+                  <span>Min deposit: $500</span>
+                </li>
+              </ul>
+              <Link href="/auth/register">
+                <Button className="w-full">Open Account</Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          <Card className="border-2">
+            <CardContent className="p-8 text-center">
+              <h3 className="text-2xl font-bold mb-2">Pro</h3>
+              <div className="text-4xl font-bold text-primary my-4">1:500</div>
+              <p className="text-muted-foreground mb-6">Leverage</p>
+              <ul className="space-y-3 text-left mb-8">
+                <li className="flex items-center">
+                  <div className="h-2 w-2 bg-primary rounded-full mr-3"></div>
+                  <span>1.0 pip spread</span>
+                </li>
+                <li className="flex items-center">
+                  <div className="h-2 w-2 bg-primary rounded-full mr-3"></div>
+                  <span>For professionals</span>
+                </li>
+                <li className="flex items-center">
+                  <div className="h-2 w-2 bg-primary rounded-full mr-3"></div>
+                  <span>Min deposit: $2,000</span>
+                </li>
+              </ul>
+              <Link href="/auth/register">
+                <Button className="w-full">Open Account</Button>
               </Link>
             </CardContent>
           </Card>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 border-t border-border">
-        <div className="container text-center text-muted-foreground">
-          <p>© 2024 BitChange Pro. Professional Cryptocurrency Exchange.</p>
+      {/* Stats Section */}
+      <section className="container mx-auto px-4 py-20">
+        <Card className="bg-primary text-primary-foreground">
+          <CardContent className="p-12">
+            <div className="grid md:grid-cols-4 gap-8 text-center">
+              <div>
+                <div className="text-4xl font-bold mb-2">28+</div>
+                <div className="text-primary-foreground/80">Forex Pairs</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold mb-2">1:500</div>
+                <div className="text-primary-foreground/80">Max Leverage</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold mb-2">2 pips</div>
+                <div className="text-primary-foreground/80">From Spread</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold mb-2">24/5</div>
+                <div className="text-primary-foreground/80">Trading Hours</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* CTA Section */}
+      <section className="container mx-auto px-4 py-20 text-center">
+        <div className="max-w-3xl mx-auto space-y-8">
+          <h2 className="text-4xl md:text-5xl font-bold">
+            Ready to Start Trading?
+          </h2>
+          <p className="text-xl text-muted-foreground">
+            Join thousands of traders who trust Capital Forex for their forex trading needs
+          </p>
+          <Link href="/auth/register">
+            <Button size="lg" className="text-lg px-12 py-6">
+              Create Free Account <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </Link>
         </div>
-      </footer>
+      </section>
+
+      {/* Risk Warning */}
+      <section className="container mx-auto px-4 py-8">
+        <Card className="bg-yellow-500/10 border-yellow-500/20">
+          <CardContent className="p-6 text-center">
+            <p className="text-sm text-muted-foreground">
+              <strong>Risk Warning:</strong> Forex trading involves significant risk of loss and is not suitable for all investors. 
+              Leverage can magnify both profits and losses. Only trade with money you can afford to lose.
+            </p>
+          </CardContent>
+        </Card>
+      </section>
     </div>
   );
 }

@@ -48,6 +48,10 @@ const MarginTrading = lazy(() => import("./pages/MarginTrading"));
 const FuturesTrading = lazy(() => import("./pages/FuturesTrading"));
 const Leaderboard = lazy(() => import("./pages/Leaderboard"));
 const AdvancedAnalytics = lazy(() => import("./pages/AdvancedAnalytics"));
+const EconomicCalendar = lazy(() => import("./pages/EconomicCalendar"));
+const TradingSignals = lazy(() => import("./pages/TradingSignals"));
+const MarketAnalysis = lazy(() => import("./pages/MarketAnalysis"));
+const RiskCalculator = lazy(() => import("./pages/RiskCalculator"));
 
 // Loading fallback component
 function PageLoader() {
@@ -90,6 +94,10 @@ function Router() {
         <Route path="/futures" component={FuturesTrading} />
         <Route path="/leaderboard" component={Leaderboard} />
         <Route path="/analytics" component={AdvancedAnalytics} />
+        <Route path="/economic-calendar" component={EconomicCalendar} />
+        <Route path="/trading-signals" component={TradingSignals} />
+        <Route path="/market-analysis" component={MarketAnalysis} />
+        <Route path="/risk-calculator" component={RiskCalculator} />
         <Route path="/transactions" component={TransactionHistory} />
         <Route path="/referrals" component={ReferralDashboard} />
         <Route path="/admin" component={Admin} />

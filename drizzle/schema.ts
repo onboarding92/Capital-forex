@@ -364,3 +364,86 @@ export const systemLogs = mysqlTable("systemLogs", {
 });
 
 export type SystemLog = typeof systemLogs.$inferSelect;
+
+// ===== TRADING SIGNALS =====
+
+export const tradingSignals = mysqlTable("tradingSignals", {
+  id: int("id").autoincrement().primaryKey(),
+  pair: varchar("pair", { length: 20 }).notNull(), // EUR/USD, GBP/USD, etc.
+  signalType: mysqlEnum("signalType", ["buy", "sell", "hold"]).notNull(),
+  strength: mysqlEnum("strength", ["weak", "moderate", "strong"]).notNull(),
+  entryPrice: decimal("entryPrice", { precision: 10, scale: 5 }).notNull(),
+  stopLoss: decimal("stopLoss", { precision: 10, scale: 5 }),
+  takeProfit: decimal("takeProfit", { precision: 10, scale: 5 }),
+  timeframe: varchar("timeframe", { length: 10 }).notNull(), // 1H, 4H, 1D
+  indicators: text("indicators"), // JSON: RSI, MACD, MA values
+  description: text("description"),
+  status: mysqlEnum("status", ["active", "closed", "expired"]).default("active").notNull(),
+  result: mysqlEnum("result", ["pending", "profit", "loss", "breakeven"]).default("pending"),
+  pips: decimal("pips", { precision: 10, scale: 2 }),
+  closedAt: timestamp("closedAt"),
+  expiresAt: timestamp("expiresAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type TradingSignal = typeof tradingSignals.$inferSelect;
+export type InsertTradingSignal = typeof tradingSignals.$inferInsert;
+
+// ===== SIGNAL SUBSCRIPTIONS =====
+
+export const signalSubscriptions = mysqlTable("signalSubscriptions", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  signalId: int("signalId").notNull(),
+  notifyEmail: boolean("notifyEmail").default(true).notNull(),
+  notifyPush: boolean("notifyPush").default(true).notNull(),
+  autoTrade: boolean("autoTrade").default(false).notNull(), // Auto-execute signal
+  positionSize: decimal("positionSize", { precision: 10, scale: 2 }), // Lot size if autoTrade
+  subscribedAt: timestamp("subscribedAt").defaultNow().notNull(),
+});
+
+export type SignalSubscription = typeof signalSubscriptions.$inferSelect;
+export type InsertSignalSubscription = typeof signalSubscriptions.$inferInsert;
+
+// ===== MARKET ANALYSIS =====
+
+export const marketAnalysis = mysqlTable("marketAnalysis", {
+  id: int("id").autoincrement().primaryKey(),
+  pair: varchar("pair", { length: 20 }).notNull(),
+  timeframe: varchar("timeframe", { length: 10 }).notNull(), // 1H, 4H, 1D
+  trend: mysqlEnum("trend", ["bullish", "bearish", "neutral"]).notNull(),
+  support: decimal("support", { precision: 10, scale: 5 }),
+  resistance: decimal("resistance", { precision: 10, scale: 5 }),
+  rsi: decimal("rsi", { precision: 5, scale: 2 }), // 0-100
+  macd: decimal("macd", { precision: 10, scale: 5 }),
+  macdSignal: decimal("macdSignal", { precision: 10, scale: 5 }),
+  ma50: decimal("ma50", { precision: 10, scale: 5 }),
+  ma200: decimal("ma200", { precision: 10, scale: 5 }),
+  volatility: decimal("volatility", { precision: 5, scale: 2 }), // percentage
+  sentiment: mysqlEnum("sentiment", ["bullish", "bearish", "neutral"]),
+  analysis: text("analysis"), // AI-generated or manual analysis
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type MarketAnalysis = typeof marketAnalysis.$inferSelect;
+export type InsertMarketAnalysis = typeof marketAnalysis.$inferInsert;
+
+// ===== PRICE ALERTS =====
+
+export const priceAlerts = mysqlTable("priceAlerts", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  pair: varchar("pair", { length: 20 }).notNull(),
+  targetPrice: decimal("targetPrice", { precision: 10, scale: 5 }).notNull(),
+  condition: mysqlEnum("condition", ["above", "below"]).notNull(),
+  triggered: boolean("triggered").default(false).notNull(),
+  notified: boolean("notified").default(false).notNull(),
+  triggeredAt: timestamp("triggeredAt"),
+  expiresAt: timestamp("expiresAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type PriceAlert = typeof priceAlerts.$inferSelect;
+export type InsertPriceAlert = typeof priceAlerts.$inferInsert;
